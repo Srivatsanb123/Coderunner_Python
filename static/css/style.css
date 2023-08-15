@@ -1,0 +1,83 @@
+body {
+    background-color: #1e1e1e;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+}
+
+.CodeMirror {
+    width: 55vw;
+}
+
+.container {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
+}
+
+.left-side, .right-side {
+    padding: 20px;
+}
+
+.left-side {
+    flex-basis: 50%;
+    background-color: #333;
+    color: #fff;
+}
+
+.right-side {
+    flex-basis: 50%;
+    background-color: #222;
+    color: #fff;
+}
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #333;
+    color: #fff;
+    padding: 10px 20px;
+}
+
+.navbar-title {
+    font-size: 24px;
+}
+
+select {
+    padding: 5px;
+    border-radius: 4px;
+    margin-bottom: 10px;
+}
+
+textarea {
+    width: 100%;
+    padding: 10px;
+    border-radius: 4px;
+    resize: vertical;
+}
+
+#input {
+    width: 54vw;
+}
+
+#output {
+    background-color: #000;
+    color: #fff;
+    padding: 10px;
+    white-space: pre-wrap;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+}
+
+button {
+    background-color: red;
+    border-radius: 4px;
+    font-family: monospace;
+    padding: 5px;
+}
+
+.grid-container {
+    display: grid;
+    grid-template-columns: 1fr 0.7fr 1.3fr;
+}
