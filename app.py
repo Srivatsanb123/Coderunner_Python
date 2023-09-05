@@ -3,6 +3,7 @@ import subprocess
 import os
 import re
 import uuid
+import shutil
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = '1234'
@@ -11,7 +12,7 @@ job_data = {}
 def execute_code(lang, code, inp, job_id):
     output = ""
     file = ""
-
+    job_dir = ""
     if lang == "Python":
         file = f"program_{job_id}.py"
         cmd = ["python", file]
@@ -22,9 +23,21 @@ def execute_code(lang, code, inp, job_id):
         file = f"program_{job_id}.cpp"
         compile_cmd = ["g++", file, "-o", f"program_{job_id}.o"]
     elif lang == "Java":
-        class_name = re.search(r"(?<=public\sclass\s)\w+(?=\s*\{)", code).group()
-        file = f"{class_name}.java"
-        compile_cmd = ["javac", file]
+        job_dir = f"job_{job_id}"
+        os.makedirs(job_dir, exist_ok=True)
+
+        class_name_match = re.search(r"(?<=public\sclass\s)(\w+)", code)
+        if class_name_match:
+            class_name = class_name_match.group(1)
+            file = os.path.join(job_dir, f"{class_name}.java")
+
+            with open(file, 'w') as f:
+                f.write(code)
+
+            compile_cmd = ["javac", file]
+        else:
+            return "Error: Java class name not found in code"
+
     elif lang == "JavaScript":
         file = f"program_{job_id}.js"
         cmd = ["node", file]
@@ -43,9 +56,7 @@ def execute_code(lang, code, inp, job_id):
                 output = process.stdout + process.stderr
             elif lang == "Java":
                 subprocess.run(compile_cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=True, timeout=5)
-                classes = re.findall(r"(?<=class\s)\w+", code)
-                cleanup_files.extend([f"{cls}.class" for cls in classes])
-                process = subprocess.run(["java", class_name], input=inp, stdout=subprocess.PIPE,
+                process = subprocess.run(["java", "-cp", job_dir, class_name], input=inp, stdout=subprocess.PIPE,
                                          stderr=subprocess.PIPE, universal_newlines=True, timeout=10)
                 output = process.stdout + process.stderr
             else:
@@ -60,6 +71,8 @@ def execute_code(lang, code, inp, job_id):
             for file in cleanup_files:
                 if os.path.exists(file):
                     os.remove(file)
+            if os.path.exists(job_dir):
+                shutil.rmtree(job_dir)
     return output
 
 @app.route('/', methods=['GET', 'POST'])
