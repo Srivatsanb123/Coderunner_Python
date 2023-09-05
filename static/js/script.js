@@ -1,21 +1,40 @@
-function saveCodeToLocalStorage() {
-    var codeTextArea = document.getElementById("code");
-    var code = codeTextArea.value;
-    localStorage.setItem("savedCode", code);
+// Setting up Ace Editor
+var codeEditor = ace.edit("code");
+var languageSelect = document.getElementById('language');
+var themeSelect = document.getElementById('theme');
+codeEditor.setOption("showPrintMargin", false)
+
+function setEditorMode(selectedLanguage) {
+    var mode;
+    switch (selectedLanguage) {
+        case 'Python':
+            mode = 'ace/mode/python';
+            break;
+        case 'C':
+        case 'C++':
+            mode = 'ace/mode/c_cpp';
+            break;
+        case 'Java':
+            mode = 'ace/mode/java';
+            break;
+        case 'JavaScript':
+            mode = 'ace/mode/javascript';
+            break;
+        default:
+            mode = 'ace/mode/text';
+            break;
+    }
+    codeEditor.getSession().setMode(mode); // Set the mode here
 }
 
-const codeTextArea = document.getElementById('code');
-const languageSelect = document.getElementById('language');
-const themeSelect = document.getElementById('theme');
-const codeEditor = CodeMirror.fromTextArea(codeTextArea, {
-    lineNumbers: true,
-    matchBrackets: true,
-    indentUnit: 4,
-    autoCloseBrackets: true,
-    mode: languageSelect.value,
-    theme: themeSelect.value
-});
+function setEditorTheme(selectedTheme){
+    codeEditor.setTheme("ace/theme/" + selectedTheme);
+}
+// Initialize Ace Editor mode based on the initial selected language and theme
+setEditorMode(languageSelect.value);
+setEditorTheme(themeSelect.value);
 
+// Saving/loading code in/from local storage
 window.onload = function() {
     var savedCode = localStorage.getItem("savedCode");
     if (savedCode) {
@@ -23,12 +42,18 @@ window.onload = function() {
     }
 };
 
+function saveCodeToLocalStorage() {
+    var codeInput = document.getElementById("editor");
+    var code = codeEditor.getValue();
+    codeInput.value = code;
+    localStorage.setItem("savedCode", code);
+}
+
+// Save and load file
 function saveToFile() {
-    var textarea = document.getElementById("code");
-    var text = textarea.value;
+    var code = codeEditor.getValue();
     var fname = document.getElementById("filename").value;
-    var blob = new Blob([text], { type: "text/plain;charset=utf-8" });
-    console.log(text);
+    var blob = new Blob([code], { type: "text/plain;charset=utf-8" });
     saveAs(blob, fname);
 }
 
@@ -45,12 +70,17 @@ function loadFile() {
     reader.readAsText(file);
 }
 
+// Language selection
 languageSelect.addEventListener('change', () => {
-    codeEditor.setOption('mode', languageSelect.value);
+    var selectedLanguage = languageSelect.value;
+    setEditorMode(selectedLanguage); // Update the Ace Editor mode
 });
 
+// Theme selection
 themeSelect.addEventListener('change', () => {
-    codeEditor.setOption('theme', themeSelect.value);
+    setEditorTheme(themeSelect.value);
+    localStorage.setItem("savedTheme", selectedTheme);
 });
 
+// Save code in local storage on submission
 document.getElementById("form").addEventListener("submit", saveCodeToLocalStorage);

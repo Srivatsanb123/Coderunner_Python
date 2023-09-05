@@ -5,8 +5,23 @@ body {
     font-family: Arial, sans-serif;
 }
 
-.CodeMirror {
+#code {
+    position: relative;
+    height:40vh;
     width: 55vw;
+}
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #333;
+    color: #fff;
+    padding: 10px 20px;
+}
+
+.navbar-title {
+    font-size: 24px;
 }
 
 .container {
@@ -29,19 +44,6 @@ body {
     flex-basis: 50%;
     background-color: #222;
     color: #fff;
-}
-
-.navbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: #333;
-    color: #fff;
-    padding: 10px 20px;
-}
-
-.navbar-title {
-    font-size: 24px;
 }
 
 select {
