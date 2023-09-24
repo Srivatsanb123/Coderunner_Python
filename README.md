@@ -1,6 +1,6 @@
 # Coderunner
 
-Coderunner is an online code runner that supports multiple programming languages, including Python, C, C++, Java, and JavaScript. It offers a range of features to enhance your coding experience, allowing you to seamlessly run, load, and download your code. You can also switch between light and dark themes to suit your preferences.
+Coderunner is an online code runner that supports multiple programming languages, including Python, C, C++, Java, and JavaScript. It offers a range of features to enhance your coding experience, allowing you to seamlessly run, load, and download your code. This code runner can able to save your code even when the user closes the browser. You can also switch between light and dark themes to suit your preferences.
 
 Visit the [Online Coderunner](http://srivatchu.pythonanywhere.com/) to try it out.
 
@@ -26,4 +26,3 @@ Visit the [Online Coderunner](http://srivatchu.pythonanywhere.com/) to try it ou
 
 5. Enjoy coding in your preferred theme!
 
-**Disclaimer:** This is a personal project and is not affiliated with any official organization or service provider.
