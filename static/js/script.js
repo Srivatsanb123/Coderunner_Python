@@ -83,4 +83,8 @@ themeSelect.addEventListener('change', () => {
 });
 
 // Save code in local storage on submission
-document.getElementById("form").addEventListener("submit", saveCodeToLocalStorage);
+//document.getElementById("form").addEventListener("submit", saveCodeToLocalStorage);
+function  sendcode(){
+    saveCodeToLocalStorage();
+    document.getElementById("form").submit();
+}
