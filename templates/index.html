@@ -1,53 +1,55 @@
 <!DOCTYPE html>
 <html lang="en-US">
 <head>
-    <meta charset="utf-8">
-    <title>Online Code Editor</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+	<meta charset="utf-8">
+	<title>Online Code Editor</title>
+	<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
 	<form id="form" method="post">
-	<nav class="navbar">
-		<div class="navbar-title">Coderunner</div>
-	</nav>
-	<div class="container">
-		<div class="left-side">
-			<h2>Code Editor</h2>
-			<div class="grid-container">
-				<div>
-					<select id="language" name="language">
-						<option value="Python" {% if language == 'Python' %}selected{% endif %}>Python</option>
-						<option value="C" {% if language == 'C' %}selected{% endif %}>C</option>
-						<option value="C++" {% if language == 'C++' %}selected{% endif %}>C++</option>
-						<option value="Java" {% if language == 'Java' %}selected{% endif %}>Java</option>
-						<option value="JavaScript" {% if language == 'JavaScript' %}selected{% endif %}>JavaScript</option>
-					</select>
-					<select id="theme" name="theme">
-						<option value="monokai" {% if theme=='monokai' %}selected{% endif %}>Dark</option>
-						<option value="chrome" {% if theme=='chrome' %}selected{% endif %}>Light</option>
-					</select>
-					<button type="button" onclick="sendcode()">Run >></button>
+		<nav class="navbar">
+			<div class="navbar-title">Coderunner</div>
+		</nav>
+		<div class="container">
+			<div class="left-side">
+				<h2>Code Editor</h2>
+				<div class="grid-container">
+					<div>
+						<select id="language" name="language">
+							<option value="Python" {% if language=='Python' %}selected{% endif %}>Python</option>
+							<option value="C" {% if language=='C' %}selected{% endif %}>C</option>
+							<option value="C++" {% if language=='C++' %}selected{% endif %}>C++</option>
+							<option value="Java" {% if language=='Java' %}selected{% endif %}>Java</option>
+							<option value="JavaScript" {% if language=='JavaScript' %}selected{% endif %}>JavaScript
+							</option>
+						</select>
+						<select id="theme" name="theme">
+							<option value="monokai" {% if theme=='monokai' %}selected{% endif %}>Dark</option>
+							<option value="chrome" {% if theme=='chrome' %}selected{% endif %}>Light</option>
+						</select>
+						<button type="button" onclick="sendcode()">Run >></button>
+					</div>
+					<div class="save">
+						<input type="text" id="filename" placeholder="Filename" style="width: 90px;">
+						<button type="button" onclick="saveToFile()">Save File</button>
+					</div>
+					<div class="load">
+						<input type="file" accept=".js,.py,.c,.cpp,.txt" id="fileInput">
+						<button type="button" onclick="loadFile()">Load File</button>
+					</div>
 				</div>
-				<div class="save">
-					<input type="text" id="filename" placeholder="Filename" style="width: 90px;">
-					<button type="button" onclick="saveToFile()">Save File</button>
-				</div>
-				<div class="load">
-					<input type="file" accept=".js,.py,.c,.cpp,.txt" id="fileInput">
-					<button type="button" onclick="loadFile()">Load File</button>
-				</div>
+				<div id="code" name="code"></div>
+				<h2>Input</h2>
+				<textarea id="input" name="input" rows="5">{% if input!=None %}{{input}}{% endif %}</textarea>
+				<textarea style="display: none;" name="editor" id="editor"></textarea>
 			</div>
-			<div id="code" name="code"></div>
-			<h2>Input</h2>
-			<textarea id="input" name="input" rows="5">{% if input!=None %}{{input}}{% endif %}</textarea>
-			<textarea style="display: none;" name="editor" id="editor"></textarea>
+			<div class="right-side">
+				<h2>Output</h2>
+				{% if output %}
+				<pre id="output">{{ output }}</pre>{% endif %}
+			</div>
 		</div>
-    	<div class="right-side">
-        	<h2>Output</h2>
-			{% if output %}<pre id="output">{{ output }}</pre>{% endif %}
-    	</div>
-	</div>
-</form>
+	</form>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.24.1/ace.min.js"></script>
 	<script src="{{ url_for('static', filename='js/script.js') }}"></script>
